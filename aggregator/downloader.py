@@ -2,11 +2,14 @@ import os
 import shutil
 import datetime
 import subprocess
+
 import util
 
-cgpBasePath = ""
+
+config = util.getConfig()
+basePath = config.basePath
 dataPath = "/data"
-os.chdir(cgpBasePath + dataPath)
+os.chdir(basePath + dataPath)
 
 
 def download(date):
@@ -20,13 +23,13 @@ def move(src, dest):
 
 
 def main():
-    date = util.lastFlattenedData()
+    date = util.getLastFlattenedDate()
     if date != None:
         while date < datetime.datetime.now():
             date = date + datetime.timedelta(hours=1)
             download(date)
     else:
-        date = util.lastProcessedData()
+        date = util.getLastProcessedDate()
         if date != None:
             while date < datetime.datetime.now():
                 date = date + datetime.timedelta(hours=1)

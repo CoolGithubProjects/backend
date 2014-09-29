@@ -2,15 +2,31 @@ import re
 import argparse
 import datetime
 import os
+import ConfigParser
+import inspect
 from os import listdir
 from os.path import isfile, join
 
-cgpBasePath = ""
-os.chdir(cgpBasePath)
+basePath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+os.chdir(basePath)
 
 
-def lastFlattenedData():
-    files = [f for f in listdir(cgpBasePath + "/flatten") if isfile(join(cgpBasePath + "/flatten", f))]
+class Configuration():
+    def __init__(self):
+        configParser = ConfigParser.RawConfigParser(allow_no_value=False)
+        configParser.read(basePath + '/config')
+        self.basePath = basePath
+        self.bigQueryProjectId = configParser.get('aggregator', 'bigQueryProjectId')
+        self.bigQuerySvcAccount = configParser.get('aggregator', 'bigQuerySvcAccount')
+        self.bigQueryDataSet = configParser.get('aggregator', 'bigQueryDataSet')
+
+
+def getConfig():
+    return Configuration()
+
+
+def getLastFlattenedDate():
+    files = [f for f in listdir(basePath + "/flatten") if isfile(join(basePath + "/flatten", f))]
 
     convertedDates = []
     for date in files:
@@ -25,8 +41,8 @@ def lastFlattenedData():
         return None
 
 
-def lastDownloadedData():
-    files = [f for f in listdir(cgpBasePath + "/data") if isfile(join(cgpBasePath + "/data", f))]
+def getLastDownloadedDate():
+    files = [f for f in listdir(basePath + "/data") if isfile(join(basePath + "/data", f))]
 
     convertedDates = []
     for date in files:
@@ -41,8 +57,8 @@ def lastDownloadedData():
         return None
 
 
-def lastProcessedData():
-    files = [f for f in listdir(cgpBasePath + "/processed") if isfile(join(cgpBasePath + "/processed", f))]
+def getLastProcessedDate():
+    files = [f for f in listdir(basePath + "/processed") if isfile(join(basePath + "/processed", f))]
 
     convertedDates = []
     for date in files:
@@ -60,6 +76,8 @@ def lastProcessedData():
 def init():
     if os.path.isfile("keyfile.p12") is False:
         print "KeyFile is missing."
+    if os.path.isfile(".bigquery.v2.token") is False:
+        print ".bigquery.v2.token is missing."
     if os.path.isdir("data") is False:
         print "[Data] folder not found. Creating folder..."
         os.makedirs("data")
@@ -74,18 +92,18 @@ def init():
 def main():
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("-ldd", "--lastdownloadeddata", action="store_true")
-    group.add_argument("-lfd", "--lastflatteneddata", action="store_true")
-    group.add_argument("-lpd", "--lastprocesseddata", action="store_true")
+    group.add_argument("-ldd", "--lastdownloadeddate", action="store_true")
+    group.add_argument("-lfd", "--lastflatteneddate", action="store_true")
+    group.add_argument("-lpd", "--lastprocesseddate", action="store_true")
     group.add_argument("-i", "--init", action="store_true")
     args = parser.parse_args()
 
-    if args.lastdownloadeddata:
-        lastDownloadedData()
-    elif args.lastflatteneddata:
-        lastFlattenedData()
-    elif args.lastprocesseddata:
-        lastProcessedData()
+    if args.lastdownloadeddate:
+        getLastDownloadedDate()
+    elif args.lastflatteneddate:
+        getLastFlattenedDate()
+    elif args.lastprocesseddate:
+        getLastProcessedDate()
     elif args.init:
         init()
 

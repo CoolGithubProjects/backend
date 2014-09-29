@@ -1,4 +1,10 @@
 /flatten
 /processed
 /data
+/config
+
+/utils.pyc
+
 /keyfile.p12
+/.bigquery.v2.token
+

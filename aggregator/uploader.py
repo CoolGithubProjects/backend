@@ -1,27 +1,30 @@
 import os
 import shutil
-
 from os import listdir
 from os.path import isfile, join
 
-cgpBasePath = ""
+import util
+
+
+config = util.getConfig()
+basePath = config.basePath
 flattenPath = "/flatten"
 processedPath = "/processed"
 externalPath = "/external"
-os.chdir(cgpBasePath)
+os.chdir(basePath)
 
 
 def upload(fileName):
-    svcAccount = ""
+    svcAccount = config.bigQuerySvcAccount
     scvAccountKeyFile = "keyfile.p12"
-    svcAccountCredFile = "../.bigquery.v2.token"
+    svcAccountCredFile = ".bigquery.v2.token"
 
-    projectId = ""
-    datasetName = "V2.GHEvents"
+    projectId = config.bigQueryProjectId
+    datasetName = config.bigQueryDataSet
 
-    dataLocation = cgpBasePath + flattenPath + "/" + fileName
-    processedLocation = cgpBasePath + processedPath + "/" + fileName
-    schemaLocation = cgpBasePath + externalPath + "/" + "schema.js"
+    dataLocation = basePath + flattenPath + "/" + fileName
+    processedLocation = basePath + processedPath + "/" + fileName
+    schemaLocation = basePath + externalPath + "/" + "schema.js"
 
     os.system("sudo bq --service_account " + svcAccount + " --service_account_private_key_file " + scvAccountKeyFile + " --service_account_credential_file " + svcAccountCredFile + " --project_id " + projectId + " load " + datasetName + " " + dataLocation + " " + schemaLocation)
 
@@ -33,7 +36,7 @@ def move(src, dest):
 
 
 def getFlattenList():
-    files = [f for f in listdir(cgpBasePath + flattenPath) if isfile(join(cgpBasePath + flattenPath, f))]
+    files = [f for f in listdir(basePath + flattenPath) if isfile(join(basePath + flattenPath, f))]
 
     if len(files) > 0:
         return files
@@ -43,7 +46,6 @@ def getFlattenList():
 
 
 def main():
-    # get file list
     list = getFlattenList()
     if list != None:
         for file in list:
