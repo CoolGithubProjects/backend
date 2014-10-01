@@ -12,7 +12,7 @@ languages = ["python", "cpp", "c", "ruby", "d", "java", "javascript", "shell", "
 
 
 def getLanguage(link):
-    token = link.split("/")
+    token = link.strip("/").split("/")
     user = token[-2]
     repo = token[-1]
     r = requests.get('https://api.github.com/repos/' + user + '/' + repo)
@@ -49,7 +49,7 @@ def main():
                             "http://git.io") or url.startswith("https://git.io") or ".github.io" in url:
                         if post.link_flair_text == None:
                             lang = getLanguage(url)
-                            if lang in languages:
+                            if lang is not None and lang in languages:
                                 post.set_flair(flair_text=lang.upper(), flair_css_class=lang)
                                 print "Setting language flair to [" + lang + "] for url [" + url + "]"
                             else:
