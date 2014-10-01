@@ -24,7 +24,7 @@ def main():
                         print "Valid post by : " + post.author.name + " " + url
                     else:
                         author = post.author.name
-                        if author == "Diastro1" or author == "curlymaster" or author == "Chris911":
+                        if author == "Diastro" or author == "curlymaster" or author == "Chris911":
                             continue
                         msg = '''The link you submitted does not point to a valid Github repository. If you think that this is a mistake, please contact the mods.'''
                         post.add_comment(msg)
