@@ -33,9 +33,9 @@ def main():
                     posts.append(post)
         except Exception,e:
             print str(e)
-            print "Error trying again in 15 seconds"
-            time.sleep(15)
-        time.sleep(5)
+            print "Error trying again in 120 seconds"
+            time.sleep(120)
+        time.sleep(60)
     return
 
 
