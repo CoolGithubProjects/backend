@@ -1,17 +1,25 @@
 import time
 import json
+import os
+import inspect
+import ConfigParser
 
 import praw
 import requests
 
+
+basePath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+os.chdir(basePath)
 
 posts = []
 languages = ["python", "cpp", "c", "ruby", "d", "java", "javascript", "shell", "scala", "objective-c", \
              "haskell", "emacs-lisp", "perl", "assembly", "csharp", "fortran", "go", "php", "common-lisp" \
                                                                                             "erlang", "swift"]
 
-def log(string):
-    print str(time.strftime("%d/%m/%Y %I:%M:%S")) + " - " + string
+
+def log(msg):
+    print str(time.strftime("%d/%m/%Y %I:%M:%S")) + " - " + msg
+
 
 def getLanguage(link):
     token = link.strip("/").split("/")
@@ -35,8 +43,11 @@ def getLanguage(link):
 
 
 def main():
-    username = raw_input("Bot username : ")
-    password = raw_input("Bot password : ")
+    configParser = ConfigParser.RawConfigParser(allow_no_value=False)
+    configParser.read(basePath + '/config')
+    username = configParser.get('mod-bot', 'username')
+    password = configParser.get('mod-bot', 'password')
+
     r = praw.Reddit(user_agent='coolgithubprojects-bot01', disable_update_check=True)
     r.login(username, password)
 
@@ -67,7 +78,7 @@ def main():
                         msg = '''The link you submitted does not point to a valid Github repository. If you think that this is a mistake, please contact the mods.'''
                         post.add_comment(msg)
                         post.remove()
-                        log("Deleted : " + str(author) + " " + str(post.title) + " " + str(post.url))
+                        log("Deleted post by [" + str(author) + "] [" + str(post.url) + "]")
         except Exception, e:
             log("Error " + "[" + str(e) + "]")
             time.sleep(60)
