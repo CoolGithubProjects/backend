@@ -10,6 +10,8 @@ languages = ["python", "cpp", "c", "ruby", "d", "java", "javascript", "shell", "
              "haskell", "emacs-lisp", "perl", "assembly", "csharp", "fortran", "go", "php", "common-lisp" \
                                                                                             "erlang", "swift"]
 
+def log(string):
+    print str(time.strftime("%d/%m/%Y %I:%M:%S")) + " - " + string
 
 def getLanguage(link):
     token = link.strip("/").split("/")
@@ -51,11 +53,11 @@ def main():
                             lang = getLanguage(url)
                             if lang is not None and lang in languages:
                                 post.set_flair(flair_text=lang.upper(), flair_css_class=lang)
-                                print "Setting language flair to [" + lang + "] for url [" + url + "]"
+                                log("Setting language flair to [" + lang + "] for url [" + url + "]")
                             else:
                                 post.set_flair(flair_text="OTHER", flair_css_class="other")
                                 print "Unsupported language [" + lang + "] for url [" + url + "]"
-                        print "Valid post by : " + post.author.name + " " + url
+                        log("Valid post by [" + post.author.name + "] [" + url + "]")
                         posts.append(post)
                     else:
                         author = post.author.name
@@ -65,10 +67,9 @@ def main():
                         msg = '''The link you submitted does not point to a valid Github repository. If you think that this is a mistake, please contact the mods.'''
                         post.add_comment(msg)
                         post.remove()
-                        print "Deleted : " + str(author) + " " + str(post.title) + " " + str(post.url)
+                        log("Deleted : " + str(author) + " " + str(post.title) + " " + str(post.url))
         except Exception, e:
-            print str(e)
-            print "Error trying again in 120 seconds"
+            log("Error " + "[" + str(e) + "]")
             time.sleep(60)
         time.sleep(15)
     return
