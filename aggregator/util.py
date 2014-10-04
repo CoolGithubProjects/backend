@@ -35,7 +35,6 @@ def getLastFlattenedDate():
     convertedDates = sorted(convertedDates)
 
     if len(convertedDates) > 0:
-        print convertedDates[-1]
         return convertedDates[-1]
     else:
         return None
@@ -51,8 +50,22 @@ def getLastDownloadedDate():
     convertedDates = sorted(convertedDates)
 
     if len(convertedDates) > 0:
-        print convertedDates[-1]
         return convertedDates[-1]
+    else:
+        return None
+
+
+def getFirstProcessedDate():
+    files = [f for f in listdir(basePath + "/processed") if isfile(join(basePath + "/processed", f))]
+
+    convertedDates = []
+    for date in files:
+        date = re.sub('\.gz$', '', date)
+        convertedDates.append(datetime.datetime.strptime(date, '%Y-%m-%d-%H'))
+    convertedDates = sorted(convertedDates)
+
+    if len(convertedDates) > 0:
+        return convertedDates[0]
     else:
         return None
 
@@ -67,10 +80,21 @@ def getLastProcessedDate():
     convertedDates = sorted(convertedDates)
 
     if len(convertedDates) > 0:
-        print convertedDates[-1]
         return convertedDates[-1]
     else:
         return None
+
+
+def getProcessedDateDelta():
+    a = getFirstProcessedDate()
+    b = getLastProcessedDate()
+    return b - a
+
+
+def getLastMonthsDate():
+    b = getLastProcessedDate()
+    a = b + datetime.timedelta(days=-30)
+    return a
 
 
 def init():
@@ -95,15 +119,24 @@ def main():
     group.add_argument("-ldd", "--lastdownloadeddate", action="store_true")
     group.add_argument("-lfd", "--lastflatteneddate", action="store_true")
     group.add_argument("-lpd", "--lastprocesseddate", action="store_true")
+    group.add_argument("-fpd", "--firstprocesseddate", action="store_true")
+    group.add_argument("-pdd", "--processeddatedelta", action="store_true")
+    group.add_argument("-lmd", "--lastmonthsdate", action="store_true")
     group.add_argument("-i", "--init", action="store_true")
     args = parser.parse_args()
 
     if args.lastdownloadeddate:
-        getLastDownloadedDate()
+        print getLastDownloadedDate()
     elif args.lastflatteneddate:
-        getLastFlattenedDate()
+        print getLastFlattenedDate()
     elif args.lastprocesseddate:
-        getLastProcessedDate()
+        print getLastProcessedDate()
+    elif args.firstprocesseddate:
+        print getFirstProcessedDate()
+    elif args.processeddatedelta:
+        print getProcessedDateDelta()
+    elif args.lastmonthsdate:
+        print getLastMonthsDate()
     elif args.init:
         init()
 
