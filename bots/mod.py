@@ -12,9 +12,22 @@ basePath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe(
 os.chdir(basePath)
 
 posts = []
-languages = ["python", "cpp", "c", "ruby", "d", "java", "javascript", "shell", "scala", "objective-c", \
-             "haskell", "emacs-lisp", "perl", "assembly", "csharp", "fortran", "go", "php", "common-lisp" \
-                                                                                            "erlang", "swift"]
+languages = ['mercury', 'objective-cpp', 'self', 'edn', 'rebol', 'xbase', 'eiffel', 'elixir', 'agda', 'perl6', 'mirah',
+             'objective-j', 'gosu', 'component-pascal', 'go', 'visual-basic', 'php', 'cirru', 'verilog', 'red', 'volt',
+             'lsl', 'coffeescript', 'latte', 'swift', 'c', 'isabelle', 'autoit', 'rust', 'sourcepawn', 'shen', 'tcl',
+             'vhdl', 'oxygene', 'assembly', 'csharp', 'turing', 'processing', 'emacs-lisp', 'ooc', 'mask', 'emberscript',
+             'nemerle', 'krl', 'ocaml', 'antlr', 'fsharp', 'smalltalk', 'pogoscript', 'livescript', 'javascript', 'slash',
+             'erlang', 'objective-c', 'eagle', 'scheme', 'python', 'nimrod', 'chapel', 'dylan', 'alloy', 'pawn',
+             'purescript', 'julia', 'haskell', 'io', 'rouge', 'dogescript', 'nesc', 'typescript', 'dart', 'frege',
+             'aspectj', 'shell', 'arduino', 'supercollider', 'mtml', 'sas', 'd', 'opal', 'standard-ml',
+             'coldfusion-cfc', 'pure-data', 'arc', 'nit', 'apl', 'sqf', 'glyph', 'java', 'scala', 'perl', 'factor',
+             'haxe', 'forth', 'hy', 'ruby', 'lfe', 'autohotkey', 'boo', 'clojure', 'css', 'prolog', 'coldfusion',
+             'harbour', 'blitzmax', 'piglatin', 'lasso', 'clean', 'propeller-spin', 'idl', 'ats', 'ada', 'nu', 'asp',
+             'flux', 'vala', 'ecl', 'netlogo', 'qml', 'fantom', 'pike', 'r', 'unified-parallel-c', 'lua', 'wisp',
+             'pascal', 'puppet', 'actionscript', 'ragel-in-ruby-host', 'zephir', 'dm', 'ioke', 'gnuplot', 'viml',
+             'matlab', 'pan', 'lookml', 'max', 'common-lisp', 'xquery', 'systemverilog', 'groovy', 'e', 'parrot',
+             'grammatical-framework', 'vcl', 'cpp', 'fortran', 'ags-script', 'tex', 'unrealscript', 'slim', 'fancy',
+             'omgrofl', 'game-maker-language', 'racket']
 
 
 def log(msg):
@@ -35,6 +48,10 @@ def getLanguage(link):
             return "csharp"
         elif language == "c++":
             return "cpp"
+        elif language == "objective-c++":
+            return "objective-cpp"
+        elif language == "f#":
+            return "fsharp"
 
         return language
     else:
@@ -82,7 +99,7 @@ def main():
         except Exception, e:
             log("Error " + "[" + str(e) + "]")
             time.sleep(60)
-        time.sleep(15)
+        time.sleep(5)
     return
 
 
