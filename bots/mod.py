@@ -71,13 +71,13 @@ def main():
             for post in submissions:
                 if post not in posts:
                     url = post.url
-                    if url.startswith("https://github.com") 
-                        or url.startswith("http://github.com") 
-                        or url.startswith("https://wwww.github.com")
-                        or url.startswith("http://wwww.github.com") 
-                        or url.startswith("http://git.io") 
-                        or url.startswith("https://git.io") 
-                        or ".github.io" in url:
+                    if (url.startswith("https://github.com") or 
+                        url.startswith("http://github.com") or 
+                        url.startswith("https://wwww.github.com") or 
+                        url.startswith("http://wwww.github.com") or 
+                        url.startswith("http://git.io") or 
+                        url.startswith("https://git.io") or  
+                        ".github.io" in url):
                         if post.link_flair_text == None:
                             lang = getLanguage(url)
                             if lang is not None and lang in languages:
