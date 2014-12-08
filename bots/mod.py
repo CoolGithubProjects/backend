@@ -7,7 +7,6 @@ import ConfigParser
 import praw
 import requests
 
-
 basePath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 os.chdir(basePath)
 
@@ -28,7 +27,6 @@ languages = ['mercury', 'objective-cpp', 'self', 'edn', 'rebol', 'xbase', 'eiffe
              'matlab', 'pan', 'lookml', 'max', 'common-lisp', 'xquery', 'systemverilog', 'groovy', 'e', 'parrot',
              'grammatical-framework', 'vcl', 'cpp', 'fortran', 'ags-script', 'tex', 'unrealscript', 'slim', 'fancy',
              'omgrofl', 'game-maker-language', 'racket']
-
 
 def log(msg):
     print str(time.strftime("%d/%m/%Y %I:%M:%S")) + " - " + msg
@@ -58,7 +56,6 @@ def getLanguage(link):
         print "Unable to get language for url [" + link + "]"
         return None
 
-
 def main():
     configParser = ConfigParser.RawConfigParser(allow_no_value=False)
     configParser.read(basePath + '/config')
@@ -74,9 +71,13 @@ def main():
             for post in submissions:
                 if post not in posts:
                     url = post.url
-                    if url.startswith("https://github.com") or url.startswith("http://github.com") or url.startswith(
-                            "https://wwww.github.com") or url.startswith("https://github.com") or url.startswith(
-                            "http://git.io") or url.startswith("https://git.io") or ".github.io" in url:
+                    if url.startswith("https://github.com") 
+                        or url.startswith("http://github.com") 
+                        or url.startswith("https://wwww.github.com")
+                        or url.startswith("http://wwww.github.com") 
+                        or url.startswith("http://git.io") 
+                        or url.startswith("https://git.io") 
+                        or ".github.io" in url:
                         if post.link_flair_text == None:
                             lang = getLanguage(url)
                             if lang is not None and lang in languages:
