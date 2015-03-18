@@ -73,8 +73,8 @@ def main():
                     url = post.url
                     if (url.startswith("https://github.com") or 
                         url.startswith("http://github.com") or 
-                        url.startswith("https://wwww.github.com") or 
-                        url.startswith("http://wwww.github.com") or 
+                        url.startswith("https://www.github.com") or 
+                        url.startswith("http://www.github.com") or 
                         url.startswith("http://git.io") or 
                         url.startswith("https://git.io") or  
                         ".github.io" in url):
